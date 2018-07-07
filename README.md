@@ -4,12 +4,12 @@ a component to auto complete input
 
 ## Installation
 ```bash
-npm i my-autocomplete -S
+npm i my-autocompletec -S
 ```
 
 ## Usage
 ```javascript
-import {AutoComplete} from 'my-autocomplete';
+import {AutoComplete} from 'my-autocompletec';
 
 new AutoComplete({
     target: '#input',

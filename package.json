@@ -1,5 +1,5 @@
 {
-  "name": "my-autocomplete",
+  "name": "my-autocompletec",
   "version": "0.0.1",
   "description": "image autocomplete",
   "main": "./dist/autocomplete.js",
