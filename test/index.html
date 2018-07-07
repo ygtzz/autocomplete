@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>autocomplete test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body{
+            text-align: center;
+        }
+        .input{
+            width: 200px;
+            padding: 5px 10px;
+        }
+        /*autoc*/
+        .autoc{
+            position: absolute;
+            text-align: left;
+            border: 1px solid #ccc;
+            border-top:0;
+            display: none;
+        }
+        .autoc ul{
+            list-style-type: none;
+        }
+        .autoc ul,.autoc li{
+            margin: 0;
+            padding: 0;
+        }
+        .auto-inner{
+            padding: 5px;
+        }
+        .auto-item.active .auto-inner{
+            background-color:#ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>autocomplete test</h1>
+    <div class="conc">
+        <input id="search" type="text" class="input" />
+    </div>
+    <script src="../dist/autocomplete.js"></script>
+    <script>
+        var dataset = [
+            {id:1,value:'ab'},
+            {id:2,value:'abc'},
+            {id:3,value:'abcd'},
+            {id:4,value:'abcdef'}
+        ]
+        new AutoComplete({
+            target: '#search',
+            dataset: dataset
+        })
+    </script>
+</body>
+</html>
