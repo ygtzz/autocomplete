@@ -1,3 +1,4 @@
+import './index.css';
 import assign from 'object-assign';
 
 function AutoComplete(opts){

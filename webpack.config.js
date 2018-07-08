@@ -20,7 +20,29 @@ var config = {
                 query: {
                     presets: ['es2015']
                 }
-             }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    { loader: 'style-loader'},
+                    { 
+                        loader: 'css-loader'
+                    }
+                ]
+            },
+            {
+                test: /\.scss$/, 
+                use: [
+                    { loader: 'style-loader' },
+                    { 
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1
+                        } 
+                    },
+                    { loader: 'sass-loader' }
+                ]
+            }
         ]
     },
     resolve: {
