@@ -37,24 +37,28 @@ function AutoComplete(opts){
     self.resultData = [];
     //监听输入框内容
     AutoComplete.prototype._changeAutoCompleteDebounce = debounce(AutoComplete.prototype._changeAutoComplete,opts.debounce);
+    //阻止光标上下键移动
     self.target.addEventListener('keydown',function(e){
         var code = e.which || e.keyCode;
         if(code == 38){
             e.preventDefault();
         }
     });
+    //keyup中可以同时获取到keyCode和input的value
     self.target.addEventListener('keyup',function(e){
         e.preventDefault();
         var code = e.which || e.keyCode;
         var inputValue = e.target.value;
-        self._changeAutoComplete(code,inputValue);
+        self._handleInput(code,inputValue);
     });
 }
 
-AutoComplete.prototype._changeAutoComplete = function(code,inputValue){
-    console.log('complete ' + inputValue);
-    console.log('code ' + code);
-    var autoc = this.autoc;
+AutoComplete.prototype._handleInput = function(code,inputValue){
+    //排除 shift,ctrl,alt键
+    var excludes = [16,17,18];
+    if(excludes.indexOf(code) > -1){
+        return;
+    }
     //上键 38
     if(code == 38){
         if(this.pos > -1){
@@ -75,36 +79,49 @@ AutoComplete.prototype._changeAutoComplete = function(code,inputValue){
         }
         this._highlightAutoComplete(this.pos);
     }
+    //回车 
+    else if(code == 13){
+        this._highlightAutoComplete(this.pos,true);
+    }
     else{
-        //todo add debounce
-        var resultData = this._findData(inputValue,this.opts.dataset);
-        this.resultData = resultData;
-        this.originValue = inputValue;
-        if(resultData && resultData.length){
-            autoc.style.display = 'block';
-            var dataHtml = resultData.map(function(item){
-                return  `<li class="auto-item">
-                            <div class="auto-inner">${item.value}</div>
-                        </li>`
-            }).join('');
-            autoc.querySelector('.autos').innerHTML = dataHtml;
-        }
-        else{
-            autoc.style.display = 'none';
-        }
-        //重置位置
-        this.pos = -1;
+        this._changeAutoCompleteDebounce(inputValue);
     }
 }
 
-AutoComplete.prototype._highlightAutoComplete = function(pos){
+AutoComplete.prototype._changeAutoComplete = function(inputValue){
+    var autoc = this.autoc;
+    var resultData = this._findData(inputValue,this.opts.dataset);
+    this.resultData = resultData;
+    this.originValue = inputValue;
+    if(resultData && resultData.length){
+        autoc.style.display = 'block';
+        var dataHtml = resultData.map(function(item){
+            return  `<li class="auto-item">
+                        <div class="auto-inner">${item.value}</div>
+                    </li>`
+        }).join('');
+        autoc.querySelector('.autos').innerHTML = dataHtml;
+    }
+    else{
+        autoc.style.display = 'none';
+    }
+    //重置位置
+    this.pos = -1;
+}
+
+AutoComplete.prototype._highlightAutoComplete = function(pos,bEnter){
     var items = Array.prototype.slice.call(this.autoc.querySelectorAll('.auto-item'));
     items.forEach(function(item){
         removeClass(item,'active');
     });
     if(pos != -1){
         var activeItem = items[pos];
-        addClass(activeItem,'active');
+        if(bEnter){
+            this.autoc.style.display = 'none';
+        }
+        else{
+            addClass(activeItem,'active');
+        }
         this.target.value = activeItem.querySelector('.auto-inner').innerHTML;
     }
     else{
