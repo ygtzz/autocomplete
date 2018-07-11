@@ -5,7 +5,8 @@ function AutoComplete(opts){
     opts = assign({
         target: '.autocomplete',
         dataset: [],
-        debounce: 300
+        debounce: 300,
+        mode: 'indexOf'
     }, opts);
     if(dataset.length < 1){
         return;
@@ -131,9 +132,26 @@ AutoComplete.prototype._highlightAutoComplete = function(pos,bEnter){
 }   
 
 AutoComplete.prototype._findData = function(str,dataset){
+    var fFilter = function(target,str){
+        return target.indexOf(str) > -1;
+    }
+    switch(this.opts.mode){
+        case 'startWith':
+            fFilter = startWith;
+            break;
+        case 'endWith':
+            fFilter = endWith;
+            break;
+        default:
+            break;
+    }
     return dataset.filter(function(item){
-        return item.value.indexOf(str) > -1 && str.length > 0;
+        return fFilter(item.value, str) && str.length > 0;
     });
+}
+
+AutoComplete.prototype.changeData = function(dataset){
+    this.opts.dataset = dataset;
 }
 
 function debounce(fn, delay) {
@@ -153,6 +171,16 @@ function addClass(dom,className){
 
 function removeClass(dom,className){
     dom.classList.remove(className);
+}
+
+function startWith(target,str){     
+    var reg=new RegExp("^"+str);     
+    return reg.test(target);        
+}  
+  
+function endWith(target,str){     
+    var reg=new RegExp(str+"$");     
+    return reg.test(target);        
 }
 
 export {AutoComplete};
