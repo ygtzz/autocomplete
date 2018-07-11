@@ -143,6 +143,18 @@ function AutoComplete(opts) {
         var inputValue = e.target.value;
         self._handleInput(code, inputValue);
     });
+    //提示项点击事件
+    self.autoc.addEventListener('click', function (e) {
+        var target = e.target;
+        while (target != e.currentTarget) {
+            if (target.nodeName == 'LI') {
+                self.target.value = target.querySelector('.auto-inner').innerHTML;
+                self.autoc.style.display = 'none';
+                break;
+            }
+            target = target.parentNode;
+        }
+    });
 }
 
 AutoComplete.prototype._handleInput = function (code, inputValue) {
@@ -327,7 +339,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".autoc{\n    position: absolute;\n    text-align: left;\n    border: 1px solid #ccc;\n    border-top:0;\n    display: none;\n}\n.autoc ul{\n    list-style-type: none;\n}\n.autoc ul,.autoc li{\n    margin: 0;\n    padding: 0;\n}\n.auto-inner{\n    padding: 5px;\n}\n.auto-item.active .auto-inner{\n    background-color:#ccc;\n}", ""]);
+exports.push([module.i, ".autoc{\n    position: absolute;\n    text-align: left;\n    border: 1px solid #ccc;\n    border-top:0;\n    display: none;\n}\n.autoc ul{\n    list-style-type: none;\n}\n.autoc ul,.autoc li{\n    margin: 0;\n    padding: 0;\n}\n.auto-inner{\n    padding: 5px;\n}\n.auto-item.active .auto-inner{\n    background-color:#ccc;\n}\n.auto-item:hover{\n    background-color: #ccc;\n}", ""]);
 
 // exports
 

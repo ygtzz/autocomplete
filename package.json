@@ -1,6 +1,6 @@
 {
   "name": "my-autocompletec",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "image autocomplete",
   "main": "./dist/autocomplete.js",
   "scripts": {

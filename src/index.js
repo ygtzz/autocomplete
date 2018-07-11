@@ -53,6 +53,18 @@ function AutoComplete(opts){
         var inputValue = e.target.value;
         self._handleInput(code,inputValue);
     });
+    //提示项点击事件
+    self.autoc.addEventListener('click',function(e){
+        var target = e.target;
+        while(target != e.currentTarget){
+            if(target.nodeName == 'LI'){
+                self.target.value = target.querySelector('.auto-inner').innerHTML;
+                self.autoc.style.display = 'none';
+                break;
+            }
+            target = target.parentNode;
+        }
+    });
 }
 
 AutoComplete.prototype._handleInput = function(code,inputValue){
